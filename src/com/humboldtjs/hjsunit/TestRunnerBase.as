@@ -2,7 +2,6 @@ package com.humboldtjs.hjsunit
 {
 	import com.humboldtjs.events.EventDispatcher;
 	import com.humboldtjs.events.HJSEvent;
-	import com.humboldtjs.system.Logger;
 	
 	import dom.window;
 	
@@ -56,6 +55,11 @@ package com.humboldtjs.hjsunit
 		protected function suiteComplete():void
 		{
 			// display the results of a test-suite
+		}
+		
+		protected function message(aMessage:String):void
+		{
+			// display the message
 		}
 		
 		public function run(aTestSuite:TestSuite):void
@@ -140,6 +144,9 @@ package com.humboldtjs.hjsunit
 					finishTest();
 
 					suiteTitle(aEvent.name);
+					break;
+				case TestMessageEvent.TEST_MESSAGE:
+					message(aEvent.detail);
 					break;
 			}
 		}

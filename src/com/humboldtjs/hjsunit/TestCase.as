@@ -2,22 +2,22 @@ package com.humboldtjs.hjsunit
 {
 	import com.humboldtjs.events.EventDispatcher;
 	import com.humboldtjs.events.HJSEvent;
-
-	public class TestSuite extends TestBase
+	
+	public class TestCase extends TestBase
 	{
-		public function TestSuite()
+		public function TestCase()
 		{
 			super();
 		}
 		
-		protected function addTest(aTest:TestCase):void
+		protected function addTestMethod(aTestMethod:Test):void
 		{
-			_tests.push(aTest);
+			_tests.push(aTestMethod);
 		}
-		
+
 		override protected function prepareRun():void
 		{
-			_assert.title(true);
+			_assert.title();
 		}
 	}
 }

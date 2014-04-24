@@ -31,7 +31,7 @@ package com.humboldtjs.hjsunit
 				failure("expected:<"+aExpected+"> | was:<"+aActual+">");
 		}
 		
-		public function sStrictlyEquals(aExpected:*, aActual:*):void
+		public function strictlyEquals(aExpected:*, aActual:*):void
 		{
 			if (aExpected === aActual)
 				success("expected:<"+aExpected+"> | was:<"+aActual+">");
@@ -92,6 +92,11 @@ package com.humboldtjs.hjsunit
 		public function title(aSuite:Boolean = false):void
 		{
 			dispatchEvent(new TestMessageEvent(aSuite ? TestMessageEvent.TEST_SUITE_TITLE : TestMessageEvent.TEST_TITLE, getName(), ""));
+		}
+		
+		public function message(aMessage:String):void
+		{
+			dispatchEvent(new TestMessageEvent(TestMessageEvent.TEST_MESSAGE, getName(), aMessage));
 		}
 		
 		public function done():void

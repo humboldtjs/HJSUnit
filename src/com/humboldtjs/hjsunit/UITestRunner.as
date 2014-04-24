@@ -52,7 +52,13 @@ package com.humboldtjs.hjsunit
 		
 		override protected function testTitle(aName:String):void
 		{
-			_html += "<h2>Running test: " + aName + "</h2>";
+			_html += "<h2>Running test-case: " + aName + "</h2>";
+			updateHtml();
+		}
+		
+		override protected function message(aMessage:String):void
+		{
+			_html += "<div><b>" + aMessage + "</b></div>";
 			updateHtml();
 		}
 		
@@ -64,7 +70,7 @@ package com.humboldtjs.hjsunit
 		
 		override protected function testComplete():void
 		{
-			_html += "<div><br/><i>Test Passed: " + _testsPassed + " Failed: " + _testsFailed + " Total: " + _testsCount + "</i></div>";
+			_html += "<div><br/><i>Case Passed: " + _testMethodsPassed + " Failed: " + _testMethodsFailed + " Total: " + _testMethodsCount + "</i></div>";
 			updateHtml();
 		}
 	}

@@ -6,11 +6,11 @@ package com.humboldtjs.hjsunit
 	
 	import dom.window;
 
-	public class TestRunner extends TestRunnerBase
+	public class LogTestRunner extends TestRunnerBase
 	{
 		protected var _title:Boolean;
 		
-		public function TestRunner()
+		public function LogTestRunner()
 		{
 			super();
 		}
@@ -45,9 +45,14 @@ package com.humboldtjs.hjsunit
 		{
 			if (!_title)
 				Logger.log("----------------------------------------------------------------------------------");
-			Logger.log("Running test: " + aName);
+			Logger.log("Running test-case: " + aName);
 			Logger.log("----------------------------------------------------------------------------------");
 			_title = true;	
+		}
+		
+		override protected function message(aMessage:String):void
+		{
+			Logger.log(aMessage);
 		}
 		
 		override protected function suiteComplete():void
@@ -61,7 +66,7 @@ package com.humboldtjs.hjsunit
 		{
 			if (!_title)
 				Logger.log("----------------------------------------------------------------------------------");
-			Logger.log("Test Passed: " + _testMethodsPassed + " Failed: " + _testMethodsFailed + " Total: " + _testMethodsCount);
+			Logger.log("Case Passed: " + _testMethodsPassed + " Failed: " + _testMethodsFailed + " Total: " + _testMethodsCount);
 		}
 		
 		override protected function doRun():void

@@ -2,55 +2,46 @@ package com.humboldtjs.hjsunit
 {
 	import com.humboldtjs.events.EventDispatcher;
 	import com.humboldtjs.events.HJSEvent;
-	
-	public class Test extends TestBase
+
+	public class Test extends EventDispatcher implements ITestRunnable
 	{
-		protected var _testMethods:Vector.<TestMethod> = new Vector.<TestMethod>();
+		protected var _name:String;
+		protected var _method:Function;
+		protected var _async:Boolean;
 		
-		public function Test()
+		protected var _assert:Assert;
+		
+		public function getName():String			{ return _name; }
+		
+		public function Test(aName:String, aMethod:Function, aAsync:Boolean = false)
 		{
 			super();
-		}
-		
-		protected function addTestMethod(aTestMethod:TestMethod):void
-		{
-			_testMethods.push(aTestMethod);
-		}
-		
-		protected function addAsyncTestMethod(aName:String, aMethod:Function):void
-		{
-			_testMethods.push(new TestMethod(aName, aMethod, true));
-		}
-		
-		public function run(assert:Assert = null):void
-		{
-			setAssert(assert);
 			
-			_assert.title();
-			
-			_queueIndex = 0;
-			_queueCount = _testMethods.length;
-			
-			doQueue();
+			_name = aName;
+			_method = aMethod;
+			_async = aAsync
 		}
 		
-		protected function doQueue():void
+		public function run(assert:Assert):void
 		{
-			_testMethods[_queueIndex].addEventListener(HJSEvent.COMPLETE, onQueueItemComplete);
-			_testMethods[_queueIndex].run(_assert);
-		}
-		
-		protected function onQueueItemComplete(aEvent:HJSEvent):void
-		{
-			_testMethods[_queueIndex].removeEventListener(HJSEvent.COMPLETE, onQueueItemComplete);
+			_assert = assert;
+			
+			if (_assert == null)
+				_assert = new Assert();
+			
+			_assert.setName(getName());
+			_assert.addEventListener(HJSEvent.COMPLETE, onTestComplete);
+			
+			_method();
 
-			_queueIndex++;
-			
-			if (_queueIndex < _queueCount) {
-				doQueue();
-			} else {
-				dispatchEvent(new HJSEvent(HJSEvent.COMPLETE));
-			}
+			if (!_async)
+				_assert.done();
+		}
+		
+		protected function onTestComplete(aEvent:HJSEvent):void
+		{
+			_assert.removeEventListener(HJSEvent.COMPLETE, onTestComplete);
+			dispatchEvent(new HJSEvent(HJSEvent.COMPLETE));
 		}
 	}
 }
